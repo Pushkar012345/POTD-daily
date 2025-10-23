@@ -1,0 +1,57 @@
+problem:-https://leetcode.com/problems/check-if-digits-are-equal-in-string-after-operations-i/
+
+---
+
+### 🧩 **Problem**
+
+Given a numeric string `s`, repeatedly replace each digit with
+`(digit[i] + digit[i+1]) % 10` until only **two digits** remain.
+Return `true` if the last two digits are **equal**, else `false`.
+
+---
+
+### ⚙️ **Approach**
+
+* Use nested loops to simulate the transformation:
+  For each round, combine adjacent digits modulo 10.
+* Keep updating the string in-place.
+* Finally, check if `s[0] == s[1]`.
+
+---
+
+### 💻 **Code**
+
+```cpp
+class Solution {
+public:
+    bool hasSameDigits(string& s) {
+        for (int i = s.size() - 1; i >= 2; i--) {
+            for (int j = 0; j < i; j++) {
+                s[j] = (s[j] + s[j + 1]) % 10 + '0';
+            }
+        }
+        return s[0] == s[1];
+    }
+};
+```
+
+---
+
+### ⏱ **Time Complexity**
+
+* Outer loop → O(n)
+* Inner loop → O(n) (on average)
+* **Total:** **O(n²)**
+
+---
+
+### 💾 **Space Complexity**
+
+* Uses only input string, no extra space → **O(1)**
+
+---
+
+### ✅ **Key Concept**
+
+`+ '0'` converts an integer digit → character
+(ASCII conversion trick for digit manipulation)
