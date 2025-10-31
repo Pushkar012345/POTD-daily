@@ -1,20 +1,72 @@
 Link:-https://leetcode.com/problems/the-two-sneaky-numbers-of-digitville/?envType=daily-question&envId=2025-10-31
 
-class Solution {
-public:
-    vector<int> getSneakyNumbers(vector<int>& nums) {
-        int n=nums.size();
-        vector<int> nums1;
-        for(int i=0;i<n;i++)
-        {
-            for (int j=i+1;j<n;j++)
-            {
-                if(nums[i]==nums[j])
-                {
-                  nums1.push_back(nums[i]);
-                }
-            }
+🔹 1. Brute Force
+💡 Logic:
+
+Compare every pair. If two numbers are same → mark as duplicate.
+
+💻 Code:
+vector<int> getSneakyNumbers(vector<int>& nums) {
+    vector<int> ans;
+    for (int i = 0; i < nums.size(); i++) {
+        for (int j = i + 1; j < nums.size(); j++) {
+            if (nums[i] == nums[j]) ans.push_back(nums[i]);
         }
-        return nums1;
     }
-};
+    return ans;
+}
+
+⏱️ Time: O(n²)
+💾 Space: O(1)
+🔹 2. Optimized (Using Frequency Array / Hashing)
+💡 Logic:
+
+Use an array freq[n] to count occurrences.
+If freq[num] == 1, that number is duplicate.
+
+💻 Code:
+vector<int> getSneakyNumbers(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> freq(n, 0), ans;
+
+    for (int num : nums) {
+        if (freq[num] == 1) ans.push_back(num);
+        else freq[num]++;
+    }
+    return ans;
+}
+
+⏱️ Time: O(n)
+💾 Space: O(n)
+🔹 3. Best (In-Place Marking)
+💡 Logic:
+
+Use the array itself as a visited marker.
+For each num, check nums[abs(num)]:
+
+If already negative → duplicate.
+
+Else → make it negative.
+
+⚠️ Fails for 0 unless handled separately.
+
+💻 Code:
+vector<int> getSneakyNumbers(vector<int>& nums) {
+    vector<int> ans;
+    for (int i = 0; i < nums.size(); i++) {
+        int index = abs(nums[i]);
+        if (nums[index] < 0) ans.push_back(index);
+        else nums[index] = -nums[index];
+    }
+    return ans;
+}
+
+⏱️ Time: O(n)
+💾 Space: O(1)
+
+✅ Interview Summary Table
+
+Approach	Idea	Time	Space
+Brute	Compare every pair	O(n²)	O(1)
+Optimized	Frequency array	O(n)	O(n)
+Best	In-place marking using signs	O(n)	O(1)
