@@ -1,0 +1,78 @@
+Problem
+
+We need to make the rope colorful — no two consecutive balloons should have the same color.
+We can remove balloons, and each removal takes some time.
+We must minimize the total removal time.
+
+🚀 Intuition
+
+If two consecutive balloons have the same color, one must be removed.
+To minimize time, always keep the balloon with higher neededTime and remove the other.
+
+So, whenever you find consecutive same-colored balloons:
+
+Add the smaller neededTime to total cost.
+
+Carry forward the higher neededTime (the one we kept).
+
+🧠 Approach (Greedy)
+
+Initialize totalCost = 0.
+
+Loop from index 1 to n-1:
+
+If colors[i] == colors[i-1]:
+
+Add min(neededTime[i], neededTime[i-1]) to total.
+
+Set neededTime[i] = max(neededTime[i], neededTime[i-1]) (keep max for next check).
+
+Return totalCost.
+
+💻 C++ Code
+// 💡 Greedy | O(n) | Keep Max Time Balloon | C++ Solution
+class Solution {
+public:
+    int minCost(string colors, vector<int>& neededTime) {
+        int n = colors.size();
+        int totalCost = 0;
+
+        for (int i = 1; i < n; i++) {
+            if (colors[i] == colors[i - 1]) {
+                totalCost += min(neededTime[i], neededTime[i - 1]);
+                neededTime[i] = max(neededTime[i], neededTime[i - 1]);
+            }
+        }
+
+        return totalCost;
+    }
+};
+
+🧮 Complexity Analysis
+Type	Complexity
+⏱ Time	O(n) — single pass through the string
+💾 Space	O(1) — constant extra space
+🧰 Example
+
+Input:
+colors = "aabaa"
+neededTime = [1,2,3,4,1]
+
+Steps:
+
+i=1: colors[1]=b? no
+i=2: colors[2]=a == colors[1]=a → remove min(3,2)=2, keep 3
+i=3: colors[3]=a != b
+i=4: colors[4]=a == colors[3]=a → remove min(1,4)=1, keep 4
+Total = 2 + 1 = 3
+
+
+Output: 3
+
+✨ Key Takeaways
+
+Always keep the most costly balloon in consecutive group.
+
+Greedy works because every local choice (keep max, remove min) leads to global minimum.
+
+Simple one-pass O(n) solution.
